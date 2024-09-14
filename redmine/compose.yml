@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+
+  redmine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: example
+      REDMINE_SECRET_KEY_BASE: supersecretkey
+    volumes:
+      - /var/lib/docker/volume_container/redmine:/usr/src/redmine/files
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: redmine
+    volumes:
+      - /var/lib/docker/volume_container/db:/var/lib/mysql
